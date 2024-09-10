@@ -32,7 +32,7 @@ function validateContact(contact) {
     if (!('Email' in contact)) return 'Email is missing';
     return '';
 }
-
+// something here 
 async function handleContactsServiceRequest(req, res) {
     if (req.url.includes("/api/contacts")) {
         const contactsFilePath = "./contacts.json";
