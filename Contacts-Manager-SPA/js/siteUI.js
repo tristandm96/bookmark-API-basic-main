@@ -66,6 +66,32 @@ async function renderContacts() {
         renderError("Service introuvable");
     }
 }
+async function renderBookmarks() {
+    showWaitingGif();
+    $("#actionTitle").text("Liste des favoris");
+    $("#createContact").show();
+    $("#abort").hide();
+    let bookmarks = await API_GetBookmarks();
+    eraseContent();
+    if(bookmarks !== null) {
+        bookmarks.forEach(bookmark => {
+            $("#content").append(renderContact(bookmark));
+        });
+        restoreContentScrollPosition();
+        // Attached click events on command icons
+        $(".editCmd").on("click", function () {
+            saveContentScrollPosition();
+            renderEditContactForm(parseInt($(this).attr("editContactId")));
+        });
+        $(".deleteCmd").on("click", function () {
+            saveContentScrollPosition();
+            renderDeleteContactForm(parseInt($(this).attr("deleteContactId")));
+        });
+        $(".contactRow").on("click", function (e) { e.preventDefault(); })
+    } else {
+        renderError("Service introuvable");
+    }
+}
 function showWaitingGif() {
     $("#content").empty();
     $("#content").append($("<div class='waitingGifcontainer'><img class='waitingGif' src='Loading_icon.gif' /></div>'"));
