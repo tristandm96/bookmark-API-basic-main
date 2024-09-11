@@ -40,9 +40,9 @@ function validateBookmark(contact) {
     return '';
 }
 // something here 
-async function handleBookmarksServiceRequest(res, req) {
+async function handleBookmarksServiceRequest(req, res) {
 
-    if (register.url.includes("/api/bookmarks")) {
+    if (req.url.includes("/api/bookmarks")) {
         let id = extract_Id_From_Request(req);
         const BookmarkFilePath = "./bookmarks.json";
         let bookmarksJson = fs.readFileSync(BookmarkFilePath);
@@ -71,7 +71,7 @@ async function handleBookmarksServiceRequest(res, req) {
                 break;
             case 'POST':
                 let newbookmark = await getPayload(req);
-                let maxId = bookmark.length();
+                let maxId = 0;
                 bookmarks.forEach(bookmark => {
                     if (bookmark.Id > maxId)
                         maxId = bookmark.Id;
@@ -138,47 +138,7 @@ async function handleBookmarksServiceRequest(res, req) {
                 break;
         }
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }}
     async function handleContactsServiceRequest(req, res) {
         if (req.url.includes("/api/contacts")) {
             const contactsFilePath = "./contacts.json";
@@ -300,7 +260,7 @@ async function handleBookmarksServiceRequest(res, req) {
     }
 
     function handleRequest(req, res) {
-        return handleContactsServiceRequest(req, res);
+        return handleBookmarksServiceRequest(req, res);
     }
 
     function getPayload(req) {
@@ -329,4 +289,3 @@ async function handleBookmarksServiceRequest(res, req) {
     const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-}
