@@ -1,5 +1,6 @@
 import { createServer } from 'http';
 import fs from 'fs';
+import { json } from 'stream/consumers';
 
 function allowAllAnonymousAccess(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,6 +34,91 @@ function validateContact(contact) {
     return '';
 }
 // something here 
+async function handleBookmarksServiceRequest(res,req){
+
+if(register.url.includes("/api/bookmarks")){
+     let id  = extract_Id_From_Request(req);
+     const BookmarkFilePath = "./bookmarks.json";
+     let bookmarksJson = fs.readFileSync(BookmarkFilePath);
+     let bookmarks = JSON.parse(bookmarksJson);
+
+     switch(req.method){
+        case('GET') :
+        if(isNaN(id)){
+            res.writeHead(200,{'content-type': 'application/json'}); // 200 = ok 
+            res.end(bookmarksJson);
+        }
+        else{
+        let found = false;
+        for (var bookmark of bookmarks){
+            if(bookmark.Id === id){
+                found = true;   
+                res.writeHead(200,{'content-type': 'application/json'});
+                res.end(JSON.stringify(bookmark));
+            }
+        }
+        if(!found){
+            res.writeHead(404) // 404 = not found error
+            res.end(`Error : The bookmark of id ${id} does not exist`) 
+         }
+
+        }
+        break;
+        case("POST") :
+           let newbookmark = await getPayload(req);
+           let maxId  = bookmark.length();
+            bookmarks.forEach(bookmark => {
+            if (bookmark.Id > maxId)
+                maxId = bookmark.Id;
+        });
+        
+        
+        
+
+        break
+     }
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function handleContactsServiceRequest(req, res) {
     if (req.url.includes("/api/contacts")) {
         const contactsFilePath = "./contacts.json";
