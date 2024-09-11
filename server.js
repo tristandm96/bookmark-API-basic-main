@@ -43,7 +43,7 @@ if(register.url.includes("/api/bookmarks")){
      let bookmarks = JSON.parse(bookmarksJson);
 
      switch(req.method){
-        case('GET') :
+        case'GET' :
         if(isNaN(id)){
             res.writeHead(200,{'content-type': 'application/json'}); // 200 = ok 
             res.end(bookmarksJson);
@@ -61,21 +61,35 @@ if(register.url.includes("/api/bookmarks")){
             res.writeHead(404) // 404 = not found error
             res.end(`Error : The bookmark of id ${id} does not exist`) 
          }
-
         }
         break;
-        case("POST") :
+        case 'POST':
            let newbookmark = await getPayload(req);
            let maxId  = bookmark.length();
             bookmarks.forEach(bookmark => {
             if (bookmark.Id > maxId)
                 maxId = bookmark.Id;
-        });
+            });
+           newbookmark.Id = maxId++;
+           bookmarks.push(newbookmark);
+           fs.writeFileSync(BookmarkFilePath, JSON.stringify(bookmarks));
+           res.writeHead(201, { 'content-type': 'application/json' });
+           res.end(JSON.stringify(newbookmark));
+        break;
+        case 'PUT' : 
         
-        
-        
+        let permutationBoormark = null;
+        let updatedBookmark = await getPayload(req);
+        if(!('Id ' in updatedBookmark)) updatedBookmark.Id = id;
+        bookmarks.forEach(bookmark => {
+         if(bookmark.Id === id){
+            permutationBoormark = bookmark;
+         }
+        })
 
-        break
+        permutationBoormark.Name = updatedBookmark.Name;
+        
+        break;
      }
 
 }
