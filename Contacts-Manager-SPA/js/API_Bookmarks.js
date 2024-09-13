@@ -20,7 +20,7 @@ function API_GetBookmark(BookmarkId) {
 function API_SaveBookmark(bookmark, create) {
     return new Promise(resolve => {
         $.ajax({
-            url: API_URL + (bookmark ? "" : "/" + contact.Id),
+            url: API_URL + (create ? "" : "/" + bookmark.Id),
             type: create ? "POST" : "PUT",
             contentType: 'application/json',
             data: JSON.stringify(bookmark),

@@ -76,7 +76,7 @@ async function handleBookmarksServiceRequest(req, res) {
                     if (bookmark.Id > maxId)
                         maxId = bookmark.Id;
                 });
-                newbookmark.Id = maxId++;
+                    newbookmark.Id = maxId +1;
                 bookmarks.push(newbookmark);
                 fs.writeFileSync(BookmarkFilePath, JSON.stringify(bookmarks));
                 res.writeHead(201, { 'content-type': 'application/json' }); // created 
@@ -120,10 +120,10 @@ async function handleBookmarksServiceRequest(req, res) {
             case 'DELETE':
                  let index = 0;
                  if(!isNaN(id)){
-               for (var bookmark in bookmarks){
+               for (let bookmark of bookmarks){
                         if (bookmark.Id === id) {
                             bookmarks.splice(index,1)
-                            fs.writeFileSync(BookmarkFilePath,bookmarks)
+                            fs.writeFileSync(BookmarkFilePath,JSON.stringify(bookmarks))
                             res.writeHead(200);
                             res.end();
                             break; 
