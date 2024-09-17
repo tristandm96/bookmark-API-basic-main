@@ -1,8 +1,6 @@
 import { createServer } from 'http';
 import fs from 'fs';
 import { json } from 'stream/consumers';
-import express from 'express';
-import path from 'path';
 function allowAllAnonymousAccess(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
@@ -289,23 +287,7 @@ async function handleBookmarksServiceRequest(req, res) {
     });
    
 
-const app = express();
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle specific route to serve index.html
-app.get('/Contacts-Manager-SPA/index.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Serve index.html for all other routes (optional, based on your needs)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
     const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
