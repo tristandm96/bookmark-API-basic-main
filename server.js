@@ -258,8 +258,8 @@ async function handleBookmarksServiceRequest(req, res) {
         return false;
     }
 
-    function handleRequest(req, res) {
-        return handleBookmarksServiceRequest(req, res);
+     async function handleRequest(req, res) {
+        return  await handleBookmarksServiceRequest(req, res);
     }
 
     function getPayload(req) {
