@@ -1,5 +1,5 @@
 {
-  "name": "contacts-api",
+  "name": "bookmarks-api",
   "version": "1.0.0",
   "description": "Démo d'un petit service API",
   "main": "server.js",

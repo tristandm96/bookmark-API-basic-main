@@ -3,9 +3,9 @@ let contentScrollPosition = 0;
 let selectedCategory = "";
 Init_UI();
 
- async function Init_UI() {
+async function Init_UI() {
     renderBookmarks();
-     let categories = await GetCategories();
+    let categories = await GetCategories();
     updateDropDownMenu(categories);
     $('#createContact').on("click", async function () {
         saveContentScrollPosition();
@@ -19,14 +19,16 @@ Init_UI();
     });
 }
 
- async function GetCategories(){
-   let categories = [];
-   let bookmarks = await API_GetBookmark();
-   for(var bookmark of bookmarks ){
-    categories.push(bookmark.Category);
-   }
-   return categories;
- }
+async function GetCategories() {
+    let categories = [];
+    let bookmarks = await API_GetBookmark();
+    for (var bookmark of bookmarks) {
+        if (!categories.includes(bookmark.Category)) {
+            categories.push(bookmark.Category);
+        }
+    }
+    return categories;
+}
 function renderAbout() {
     saveContentScrollPosition();
     eraseContent();
@@ -84,9 +86,9 @@ async function renderBookmarks() {
     $("#abort").hide();
     let bookmarks = await API_GetBookmarks();
     eraseContent();
-    if(bookmarks !== null) {
+    if (bookmarks !== null) {
         bookmarks.forEach(bookmark => {
-            if(bookmark.Category == selectedCategory || selectedCategory === ""){
+            if (bookmark.Category == selectedCategory || selectedCategory === "") {
                 $("#content").append(renderBookmark(bookmark));
             }
         });
@@ -132,10 +134,10 @@ function renderError(message) {
 function renderCreateContactForm() {
     renderContactForm();
 }
-function renderCreateBookmarkForm(){
+function renderCreateBookmarkForm() {
     renderBookmarkForm();
 }
-async function renderEditBookmarkForm(id){
+async function renderEditBookmarkForm(id) {
     showWaitingGif();
     let bookmark = await API_GetBookmark(id);
     if (bookmark !== null)
@@ -152,14 +154,14 @@ async function renderEditContactForm(id) {
     else
         renderError("Contact introuvable!");
 }
-async function renderDeleteBookmarkForm(id){
+async function renderDeleteBookmarkForm(id) {
     showWaitingGif();
     $("#createContact").hide();
     $("#abort").show();
     $("#actionTitle").text("Retrait");
     let bookmark = await API_GetBookmark(id);
     eraseContent();
-    if (bookmark!== null) {
+    if (bookmark !== null) {
         $("#content").append(`
         <div class="contactdeleteForm">
             <h4>Effacer le contact suivant?</h4>
@@ -192,7 +194,7 @@ async function renderDeleteBookmarkForm(id){
     } else {
         renderError("bookmark introuvable!");
     }
-    
+
 }
 async function renderDeleteContactForm(id) {
     showWaitingGif();
@@ -243,10 +245,10 @@ function newContact() {
     contact.Email = "";
     return contact;
 }
-function newBookmark(){
+function newBookmark() {
     bookmark = {}
     bookmark.Id = 0;
-    bookmark.Title ="";
+    bookmark.Title = "";
     bookmark.Url = "";
     bookmark.Category = "";
     return bookmark;
@@ -316,7 +318,7 @@ function renderBookmarkForm(bookmark = null) {
         renderBookmarks();
     });
 }
-function renderContactForm(contact= null){
+function renderContactForm(contact = null) {
     $("#createContact").hide();
     $("#abort").show();
     eraseContent();
@@ -408,7 +410,7 @@ function renderContact(contact) {
     </div>           
     `);
 }
-function renderBookmark(bookmark){
+function renderBookmark(bookmark) {
     return $(`
        <div class="contactRow" contact_id="${bookmark.Id}">
     <div class="bookmarkContainer noselect">
@@ -427,39 +429,40 @@ function renderBookmark(bookmark){
 
 }
 function updateDropDownMenu(categories) {
-console.log(selectedCategory);
-console.log(categories);
-let DDMenu = $("#DDMenu");
-let selectClass = selectedCategory === "" ? "fa-check" : "fa-fw";
-DDMenu.empty();
-DDMenu.append($(`
+    console.log(selectedCategory);
+    console.log(categories);
+    let DDMenu = $("#DDMenu");
+    let selectClass = selectedCategory === "" ? "fa-check" : "fa-fw";
+    DDMenu.empty();
+    DDMenu.append($(`
 <div class="dropdown-item menuItemLayout" id="allCatCmd">
 <i class="menuIcon fa ${selectClass} mx-2"></i> Toutes les catégories
 </div>
 `));
-DDMenu.append($(`<div class="dropdown-divider"></div>`));
-categories.forEach(category => {
-selectClass = selectedCategory === category ? "fa-check" : "fa-fw";
-DDMenu.append($(`
+    DDMenu.append($(`<div class="dropdown-divider"></div>`));
+    categories.forEach(category => {
+        selectClass = selectedCategory === category ? "fa-check" : "fa-fw";
+        DDMenu.append($(`
 <div class="dropdown-item menuItemLayout category" id="allCatCmd">
 <i class="menuIcon fa ${selectClass} mx-2"></i> ${category}
 </div>
 `));
-})
-DDMenu.append($(`<div class="dropdown-divider"></div> `));
-DDMenu.append($(`
+    })
+    DDMenu.append($(`<div class="dropdown-divider"></div> `));
+    DDMenu.append($(`
 <div class="dropdown-item menuItemLayout" id="aboutCmd">
 <i class="menuIcon fa fa-info-circle mx-2"></i> À propos...
 </div>
 `));
-$('#aboutCmd').on("click", function () {
-renderAbout();
-});
-$('#allCatCmd').on("click", function () {
-selectedCategory = "";
-renderBookmarks();
-});
-$('.category').on("click", function () {
-selectedCategory = $(this).text().trim();
-renderBookmarks();
-});}
+    $('#aboutCmd').on("click", function () {
+        renderAbout();
+    });
+    $('#allCatCmd').on("click", function () {
+        selectedCategory = "";
+        renderBookmarks();
+    });
+    $('.category').on("click", function () {
+        selectedCategory = $(this).text().trim();
+        renderBookmarks();
+    });
+}
