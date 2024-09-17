@@ -1,16 +1,15 @@
 {
-  "name": "bookmarks-api",
+  "name": "c",
   "version": "1.0.0",
   "description": "Démo d'un petit service API",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "engines": {
-    "node":"16.14.2"
+    "node": "16.14.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" :"node launch.js"
-     
+    "start": "node server.js"
   },
   "author": "Nicolas Chourot",
   "license": "ISC"
